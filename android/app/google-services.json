@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1019849170767",
+    "project_id": "truthify-c9f77",
+    "storage_bucket": "truthify-c9f77.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1019849170767:android:f787ca0027410497e2ef3a",
+        "android_client_info": {
+          "package_name": "com.example.demo1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1019849170767-8jb17r6ts3vn21hkqdp88itf1nv86bad.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSYWM9DGtNU1QwgxQZsBcuGah8CT6nK4I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1019849170767-8jb17r6ts3vn21hkqdp88itf1nv86bad.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
