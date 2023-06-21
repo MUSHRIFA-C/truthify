@@ -66,7 +66,7 @@ class _ScanlogoState extends State<Scanlogo> {
   }
   Future<void> submitForm() async {
 
-    var uri = Uri.parse('https://6e57-42-106-190-110.ngrok-free.app/api/logo_detection'); // Replace with your API endpoint
+    var uri = Uri.parse('https://fcfa-117-223-90-226.ngrok-free.app/api/logo_detection'); // Replace with your API endpoint
     print(_filename);
 
     var request = http.MultipartRequest('POST', uri);
