@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:demo1/auth_controller.dart';
 import 'package:demo1/login.dart';
 import 'package:demo1/profile.dart';
 import 'package:demo1/scanlogo.dart';
@@ -13,38 +14,81 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
+  List<String>images =[
+    "images/img.png",
+    "images/img_1.png",
+    "images/img_5.png"
+  ];
+
   TextEditingController searchController=TextEditingController();
   int currentTab = 0;
 
   Widget currentScreen = HomePage();
+  final CarouselController carouselController = CarouselController();
+  int currentIndex = 0;
   @override
   Widget build(BuildContext context) {
     var size=MediaQuery.of(context).size;
 
     return Scaffold(
 
-        body: Stack(
-          children: [
-        Container(
-        height: size.height * .45,
-          decoration: BoxDecoration(
-            color: Colors.purple,
-          ),
-        ),
+        body: SafeArea(
+          child: Stack(
+            children: [
+              InkWell(
+                onTap: (){
+                  print(currentIndex);
+                },
+                child: CarouselSlider(
+                  items: images.map(
+                          (item) => Image.asset(
+                        item,
+                        fit: BoxFit.fitWidth,
+                        width: 600,
+                        height: size.height * .45,
+                      )
+                  ).toList(),
+                  carouselController: carouselController,
+                  options: CarouselOptions(
+                      scrollPhysics: const BouncingScrollPhysics(),
+                      autoPlay: true,
+                      aspectRatio: 1.5,
+                      viewportFraction: 1,
+                      onPageChanged: (index,reason){
+                        setState(() {
+                          currentIndex=index;
+                        });
+                      }
+                  ),
+                ),
+              ),
+       /* Container(
+          height: size.height * .45,
+              child: PageView.builder(
+                  itemCount: 3,
+                  pageSnapping: true,
+                  itemBuilder: (context,pagePosition){
+                    return Container(
+                        child: Image.asset(images[pagePosition],fit: BoxFit.cover,));
+                  }),
+            decoration: BoxDecoration(
+              color: Colors.purple
+            )
+            ),*/
 
 
-        SafeArea(
-        child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+          SafeArea(
+          child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
     child: Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      SizedBox(height: 20,),
-    Text("Hi\n WELCOME BACK !",style: TextStyle(fontWeight: FontWeight.w700,fontSize:20,color: Colors.white),),
+      SizedBox(height: 100,),
+   /* Text("Hi\n WELCOME BACK !",style: TextStyle(fontWeight: FontWeight.bold,fontSize:25,color: Colors.black),),*/
 
 
-    SizedBox(height: 40,),
-    CarouselSlider(
+    SizedBox(height: 30,),
+    /*CarouselSlider(
     options: CarouselOptions(height: 180.0),
     items: ["images/img.png","images/img_1.png","images/img_5.png"].map((i) {
     return Builder(
@@ -61,9 +105,9 @@ class _HomePageState extends State<HomePage> {
     },
     );
     }).toList(),
-    ),
-    SizedBox(height: 50,),
+    ),*/
 
+    SizedBox(height: 160,),
     Expanded(
     child: GridView.count(
     crossAxisCount: 2,
@@ -71,7 +115,6 @@ class _HomePageState extends State<HomePage> {
     crossAxisSpacing: 20,
     mainAxisSpacing: 20,
     children: [
-
     Container(
     padding: EdgeInsets.all(20),
     decoration: BoxDecoration(
@@ -109,39 +152,6 @@ class _HomePageState extends State<HomePage> {
     ),
 
       Container(
-        padding: EdgeInsets.all(20),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(15),
-            boxShadow: [
-              BoxShadow(
-                  offset: Offset(0,17),
-                  blurRadius: 17,
-                  spreadRadius: -23
-              )
-            ]
-        ),
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>Scanlogo()));
-            },
-            child: Column(
-                  children: [
-
-                    new Image.asset('images/img_2.png',
-                      height: 120,
-                      width: 200,
-                      alignment: Alignment.topCenter,
-                    ),
-                    SizedBox(height: 10,),
-                    Text('Scan Logo',textAlign: TextAlign.center,style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),)
-
-                  ],
-
-            )))),
-      Container(
           padding: EdgeInsets.all(20),
           decoration: BoxDecoration(
               color: Colors.white,
@@ -155,36 +165,72 @@ class _HomePageState extends State<HomePage> {
               ]
           ),
           child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                  onTap: () {
-                     Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()));
-                  },
-                  child: Column(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>Scanlogo()));
+              },
+              child: Column(
                     children: [
 
-                      new Image.asset('images/img_6.png',
-                        height: 100,
+                      new Image.asset('images/img_2.png',
+                        height: 120,
                         width: 200,
                         alignment: Alignment.topCenter,
                       ),
                       SizedBox(height: 10,),
-                      Text('Logout',textAlign: TextAlign.center,style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),)
+                      Text('Scan Logo',textAlign: TextAlign.center,style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),)
 
                     ],
 
-                  ))))
-    ],
+              )))),
+      Container(
+            padding: EdgeInsets.all(20),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                      offset: Offset(0,17),
+                      blurRadius: 17,
+                      spreadRadius: -23
+                  )
+                ]
             ),
+            child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                    onTap: () {
+                      AuthController.instance.logOut();
+                       //Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()));
+                    },
+                    child: Column(
+                      children: [
+
+                        new Image.asset('images/img_6.png',
+                          height: 100,
+                          width: 200,
+                          alignment: Alignment.topCenter,
+                        ),
+                        SizedBox(height: 10,),
+                        Text('Logout',textAlign: TextAlign.center,style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),)
+
+                      ],
+
+                    ))))
+    ],
+              ),
+            ),
+          ] ),
+
+
           ),
-        ] ),
+          ),
+    ]
+    ),
+        ));
 
 
-        ),
-        ),
-        ] ),
-
-       );
 
 }
 }

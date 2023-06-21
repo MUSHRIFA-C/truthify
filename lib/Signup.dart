@@ -9,6 +9,8 @@ class Signup extends StatelessWidget {
   Widget build(BuildContext context) {
     var emailCon = TextEditingController();
     var passCon = TextEditingController();
+    var fullCon = TextEditingController();
+    var placeCon = TextEditingController();
 
 
     return SafeArea(
@@ -24,9 +26,39 @@ class Signup extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
+                      controller: fullCon,
                         decoration: InputDecoration(
                             prefixIcon: Icon(Icons.person,color: Colors.purple),
                             label: Text("Name",style: TextStyle(color: Colors.purple),),
+                            // hintText: "Username",
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide: BorderSide(
+                                    color: Colors.purple,
+                                    width: 1.5
+                                )
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide(
+                                color: Colors.purple,
+                                width: 1.5
+                            )
+                        ),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20)
+                            )
+                        )
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextField(
+                        controller: placeCon,
+                        decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.person,color: Colors.purple),
+                            label: Text("Place",style: TextStyle(color: Colors.purple),),
                             // hintText: "Username",
                             focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(30),
@@ -121,7 +153,8 @@ class Signup extends StatelessWidget {
                                     color: Colors.purple,
                                     width: 1.5
                                 )
-                            ), enabledBorder: OutlineInputBorder(
+                            ),
+                            enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(30),
                             borderSide: BorderSide(
                                 color: Colors.purple,
@@ -135,7 +168,7 @@ class Signup extends StatelessWidget {
                   ),
                   SizedBox(height: 10,),
                   ElevatedButton(onPressed: (){
-                    AuthController.instance.register(emailCon.text.trim(),passCon.text.trim());
+                    AuthController.instance.register(emailCon.text.trim(),passCon.text.trim(),fullCon.text.trim(),placeCon.text.trim());
                     /*Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()));*/
                   },
                     style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(29.0)),primary: Colors.purple,fixedSize: Size(350, 57)),
@@ -145,15 +178,15 @@ class Signup extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Already  have an acoount?",style: TextStyle(fontSize: 16,color: Colors.purple),),
+                      Text("Already have an account?",style: TextStyle(fontSize: 16,color: Colors.purple),),
                       TextButton(onPressed: (){
                         Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()));
                       },
                           child: Text("Login",style: TextStyle(fontSize: 20,color: Colors.purple,fontWeight: FontWeight.bold),))
-
                     ],
                   ),
-                ]),
+                ]
+            ),
           )
       ),
 

@@ -1,6 +1,9 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo1/welcome.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'home.dart';
 
@@ -14,26 +17,69 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
 
   bool isObscurePassword=true;
-
+  String userId='';
+  User? user;
   int currentTab = 2;
   final List<Widget> screen =[
-   /* HomePage(),*/
-   /* ClassNotify(),*/
-   /* Profile(),*/
+    /* HomePage(),*/
+    /* ClassNotify(),*/
+    /* Profile(),*/
 
   ];
 
- /* Widget currentScreen = Profile();
+  // Widget currentScreen = Profile();
 
   TextEditingController unameController=TextEditingController();
   TextEditingController plcController=TextEditingController();
   TextEditingController emailController=TextEditingController();
-  TextEditingController pwdController=TextEditingController();*/
+  TextEditingController pwdController=TextEditingController();
+
+  void fetchUserData() {
+    user = FirebaseAuth.instance.currentUser;
+    userId = user!.uid;
+    FirebaseFirestore.instance.collection('tbl_user').doc(userId).get().then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        Map<String, dynamic> data = documentSnapshot.data() as Map<String, dynamic>;
+        String fullname = data['fullname'] as String;
+        String place = data['place'] as String;
+
+        unameController.text=fullname;
+        plcController.text=place;
+        print('Fullname: $fullname');
+        print('Place: $place');
+      } else {
+        print('User document does not exist');
+      }
+    }).catchError((error) {
+      print('Failed to fetch user data: $error');
+    });
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetchUserData();
+  }
+
+  void updateUserData(String fullname, String place) {
+    FirebaseFirestore.instance.collection('tbl_user').doc(userId).update({
+      'fullname': fullname,
+      'place': place,
+    }).then((value) {
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
+      Fluttertoast.showToast(
+        msg:"User data updated successfully!",
+        backgroundColor: Colors.grey,
+      );
+      print('User data updated successfully!');
+    }).catchError((error) {
+      print('Failed to update user data: $error');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       bottomNavigationBar: Container(
         padding: EdgeInsets.symmetric(horizontal: 50,vertical: 10),
         height: 80,
@@ -41,75 +87,9 @@ class _ProfileState extends State<Profile> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
 
-          /*  GestureDetector(
-              onTap: () {
-                setState(() {
-                  currentScreen = HomePage();
-                  currentTab = 0;
-                });
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
-              },
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-
-                  Icon(Icons.home_outlined,size: 30,color: currentTab==0 ? Colors.blue : Colors.black,),
-                  *//*  new Image.asset('icon/home.png',
-                    height: 35,
-                    width: 55,
-                  ),
-                 *//*
-                  Text('Home',style: TextStyle(fontWeight: FontWeight.bold,color: currentTab==0 ? Colors.blue : Colors.black),)
-                ],
-              ),
-            ),
-*/
-            /*GestureDetector(
-              onTap: () {
-                setState(() {
-                  currentScreen=ClassNotify();
-                  currentTab = 1;
-                });
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>ClassNotify()));
-
-              },
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  // new Image.asset('icon/notification.png',
-                  //   height: 40,
-                  //   width: 60,
-                  // ),
-                  Icon(Icons.notifications_outlined,size: 30,),
-                  Text('Notification',style: TextStyle(fontWeight: FontWeight.bold,color: currentTab==1 ? Colors.blue : Colors.black),)
-                ],
-              ),
-            ),
-*/
-        /*    GestureDetector(
-              onTap: () {
-                setState(() {
-                  currentScreen=Profile();
-                  currentTab = 2;
-                });
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>Profile()));
-              },
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  // new Image.asset('icon/user.png',
-                  //   height: 35,
-                  //   width: 55,
-                  // ),
-                  Icon(Icons.person_outline_outlined,size: 30,color: currentTab==2 ? Colors.blue : Colors.black),
-                  Text('Profile',style: TextStyle(fontWeight: FontWeight.bold,color: currentTab==2 ? Colors.blue : Colors.black),)
-                ],
-              ),
-            ),*/
           ],
         ),
       ),
-
       appBar: AppBar(
         backgroundColor:Colors.purple ,
         title: Text("Profile"),
@@ -178,20 +158,18 @@ class _ProfileState extends State<Profile> {
                           )
                       ),
                     ),
-
-
                   ],
                 ),
               ),
-              SizedBox(height: 30,),
 
-              buildTextField("Full name", "anu", false),
-              buildTextField("Email", "anu@gmail.com", false),
+              SizedBox(height: 30,),
+              buildTextField("Full name",unameController, false),
+              /*  buildTextField("Email", "anu@gmail.com", false),
               buildTextField("Password", "1234567", true),
-              buildTextField("Place", "malappuram", false),
+           */
+              buildTextField("Place",plcController, false),
 
               SizedBox(height: 30,),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -199,6 +177,7 @@ class _ProfileState extends State<Profile> {
                     onPressed: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
                     },
+
                     child: Text("CANCEL",style: TextStyle(
                         fontSize: 15,
                         letterSpacing: 2,
@@ -212,10 +191,12 @@ class _ProfileState extends State<Profile> {
                   ),
 
                   ElevatedButton(
-                    onPressed: (){},
+                    onPressed: (){
+                      updateUserData(unameController.text,plcController.text);
+                    },
                     child: Text("SUBMIT",style: TextStyle(fontSize: 15, letterSpacing: 2, color: Colors.white),),
                     style: ElevatedButton.styleFrom(
-                        primary: Colors.purple,
+                        backgroundColor: Colors.purple,
                         padding: EdgeInsets.symmetric(horizontal: 50),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
                     ),
@@ -230,10 +211,11 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  Widget buildTextField(String labelText, String placeholder, bool isPasswordTextField){
+  Widget buildTextField(String labelText,TextEditingController controller, bool isPasswordTextField){
     return Padding(
       padding: EdgeInsets.only(bottom: 30),
       child: TextFormField(
+        controller: controller,
         obscureText: isPasswordTextField ? isObscurePassword: false,
         decoration: InputDecoration(
             suffixIcon: isPasswordTextField ?
@@ -248,7 +230,7 @@ class _ProfileState extends State<Profile> {
             contentPadding: EdgeInsets.only(bottom: 5),
             labelText: labelText,
             floatingLabelBehavior: FloatingLabelBehavior.always,
-            hintText: placeholder,
+            //  hintText: placeholder,
             hintStyle: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,

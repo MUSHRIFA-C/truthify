@@ -12,8 +12,7 @@ class Welcome extends StatefulWidget {
 class _WelcomeState extends State<Welcome> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         body: SafeArea(
           child: Scaffold(
             body: SingleChildScrollView(
@@ -22,7 +21,9 @@ class _WelcomeState extends State<Welcome> {
                   Padding(
                     padding: const EdgeInsets.only(top: 80.0),
                     child: Text("WELCOME TO TRUTHIFY",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color: Colors.purple),),
-                  ), SizedBox(height: 30,),
+                  ),
+
+                  SizedBox(height: 30,),
                   Image.asset("images/s2.jpg",
                   width: 800, height: 300,
                       ),
@@ -50,7 +51,7 @@ class _WelcomeState extends State<Welcome> {
             ),
 
           ),
-      ),
+
     );
   }
 }

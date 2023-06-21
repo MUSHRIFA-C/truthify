@@ -11,7 +11,6 @@ class Login extends StatefulWidget {
   @override
   State<Login> createState() => _LoginState();
 }
-
 class _LoginState extends State<Login> {
   var emailCon = TextEditingController();
   var passCon = TextEditingController();
@@ -34,7 +33,7 @@ class _LoginState extends State<Login> {
                   controller: emailCon,
                   decoration: InputDecoration(
                       prefixIcon: Icon(Icons.email,color: Colors.purple,),
-                      label: Text("Email",style: TextStyle(color: Colors.purple)),
+                      label: Text("Email",style: TextStyle(color: Colors.purple),),
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide(
@@ -62,7 +61,7 @@ class _LoginState extends State<Login> {
                   obscureText: true,
                   decoration: InputDecoration(
                       prefixIcon: Icon(Icons.lock,color: Colors.purple,),
-                      label: Text("Password",style: TextStyle(color: Colors.purple)),
+                      label: Text("Password",style: TextStyle(color: Colors.purple),),
                       // hintText: "Username",
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
@@ -105,7 +104,6 @@ class _LoginState extends State<Login> {
     )),),
 
     SizedBox(height: 10,),
-
     Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [

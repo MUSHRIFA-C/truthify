@@ -1,9 +1,11 @@
 import 'package:demo1/home.dart';
 import 'package:demo1/login.dart';
 import 'package:demo1/welcome.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:path/path.dart';
 //it should be accesible from all page
 
 class AuthController extends GetxController{//should be responsible for navigating different pages
@@ -23,15 +25,24 @@ class AuthController extends GetxController{//should be responsible for navigati
   _initialScreen(User? user){
     if(user==null){
       print("login page");
-      Get.offAll(()=>Login());
+      Get.offAll(()=>Welcome());
 
     }else{
       Get.offAll(()=>HomePage(email:user.email));
     }
   }
-  void register(String email,password)async{
+  void register(String email,password,String name,String place)async{
     try{
-      await  auth.createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential userCredential= await  auth.createUserWithEmailAndPassword(email: email, password: password);
+      _user.value != null ? Get.offAll(() => const Login()) : Get.to(() => const Login());
+
+      String userId = userCredential.user!.uid;
+
+      // Save additional data to Firestore
+      await FirebaseFirestore.instance.collection('tbl_user').doc(userId).set({
+        'fullname': name,
+        'place': place,});
+
     }
     catch(e){
       Get.snackbar("About User", "User message",
@@ -44,10 +55,10 @@ class AuthController extends GetxController{//should be responsible for navigati
     }
 
   }
-  void login(String email,password)async{
-    try{
-      await  auth.signInWithEmailAndPassword(email: email, password: password);
-    }catch(e){
+  void login(String email,password)async {
+    try {
+      await auth.signInWithEmailAndPassword(email: email, password: password);
+    } catch (e) {
       Get.snackbar("About Login", "Login message",
           backgroundColor: Colors.redAccent,
           snackPosition: SnackPosition.BOTTOM,
@@ -56,9 +67,8 @@ class AuthController extends GetxController{//should be responsible for navigati
           ),
           messageText: Text(e.toString()));
     }
-
   }
-  void logOut()async{
+  void logOut()async {
     await auth.signOut();
   }
 }
