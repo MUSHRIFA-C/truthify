@@ -66,7 +66,7 @@ class _ScanlogoState extends State<Scanlogo> {
   }
   Future<void> submitForm() async {
 
-    var uri = Uri.parse('https://fcfa-117-223-90-226.ngrok-free.app/api/logo_detection'); // Replace with your API endpoint
+    var uri = Uri.parse('https://add1-14-139-185-8.ngrok-free.app/api/logo_detection'); // Replace with your API endpoint
     print(_filename);
 
     var request = http.MultipartRequest('POST', uri);
@@ -215,7 +215,7 @@ class _ScanlogoState extends State<Scanlogo> {
       setState(() {
         imageFile = File(pickedFile.path);
         _filename = basename(imageFile!.path);
-         _filename = basename(imageFile!.path).toString();
+        _filename = basename(imageFile!.path).toString();
         final _nameWithoutExtension = basenameWithoutExtension(imageFile!.path);
         final _extenion = extension(imageFile!.path);
       });

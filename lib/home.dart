@@ -62,20 +62,6 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-       /* Container(
-          height: size.height * .45,
-              child: PageView.builder(
-                  itemCount: 3,
-                  pageSnapping: true,
-                  itemBuilder: (context,pagePosition){
-                    return Container(
-                        child: Image.asset(images[pagePosition],fit: BoxFit.cover,));
-                  }),
-            decoration: BoxDecoration(
-              color: Colors.purple
-            )
-            ),*/
-
 
           SafeArea(
           child: Padding(
@@ -88,24 +74,7 @@ class _HomePageState extends State<HomePage> {
 
 
     SizedBox(height: 30,),
-    /*CarouselSlider(
-    options: CarouselOptions(height: 180.0),
-    items: ["images/img.png","images/img_1.png","images/img_5.png"].map((i) {
-    return Builder(
-    builder: (BuildContext context) {
-    return Container(
-    width: MediaQuery.of(context).size.width,
-    margin: EdgeInsets.symmetric(horizontal: 5.0),
-    decoration: BoxDecoration(
-    image: DecorationImage(image: AssetImage("$i"),fit: BoxFit.cover),
 
-    ),
-
-    );
-    },
-    );
-    }).toList(),
-    ),*/
 
     SizedBox(height: 160,),
     Expanded(
